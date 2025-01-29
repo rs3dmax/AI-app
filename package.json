@@ -1,0 +1,6 @@
+{
+  "name": "ai-app",
+  "version": "1.0.0",
+  "description": "My AI App",
+  "main": "server.js",
+  "scripts":
