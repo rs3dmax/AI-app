@@ -35,10 +35,14 @@ app.post("/generate", async (req, res) => {
 
         res.json({ response: response.data.choices[0].message.content });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Błąd generowania treści AI" });
+    if (error.response) {
+        console.error("Błąd OpenAI:", JSON.stringify(error.response.data, null, 2));
+        res.status(error.response.status).json(error.response.data);
+    } else {
+        console.error("Błąd serwera:", error.message);
+        res.status(500).json({ error: error.message });
     }
-});
+}
 
 // Start serwera
 const PORT = process.env.PORT || 10000;
