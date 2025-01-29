@@ -9,7 +9,6 @@ app.use(cors());
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
-// Endpoint do generowania treści
 app.post("/generate", async (req, res) => {
     const { prompt } = req.body;
 
@@ -21,8 +20,8 @@ app.post("/generate", async (req, res) => {
         const response = await axios.post(
             "https://api.openai.com/v1/chat/completions",
             {
-                model: "gpt-4", // Możesz zmienić na "gpt-3.5-turbo" jeśli chcesz tańszą opcję
-                messages: [{ role: "system", content: "Jesteś pomocnym asystentem do generowania treści." }, { role: "user", content: prompt }],
+                model: "gpt-4",
+                messages: [{ role: "user", content: prompt }],
                 max_tokens: 500
             },
             {
@@ -35,16 +34,11 @@ app.post("/generate", async (req, res) => {
 
         res.json({ response: response.data.choices[0].message.content });
     } catch (error) {
-    if (error.response) {
-        console.error("Błąd OpenAI:", JSON.stringify(error.response.data, null, 2));
-        res.status(error.response.status).json(error.response.data);
-    } else {
-        console.error("Błąd serwera:", error.message);
-        res.status(500).json({ error: error.message });
+        console.error("Błąd OpenAI:", error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
+        res.status(500).json({ error: error.response ? error.response.data : "Błąd generowania treści AI" });
     }
-}
+});
 
-// Start serwera
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
