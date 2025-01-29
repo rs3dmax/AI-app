@@ -1,6 +1,12 @@
 {
   "name": "ai-app",
   "version": "1.0.0",
-  "description": "My AI App",
+  "description": "AI content generator",
   "main": "server.js",
-  "scripts":
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
