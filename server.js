@@ -19,12 +19,12 @@ app.post("/generate-text", async (req, res) => {
 
     try {
         const response = await axios.post(
-            "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct",
-            { inputs: prompt },
-            {
-                headers: { Authorization: `Bearer ${HUGGINGFACE_API_KEY}` }
-            }
-        );
+    "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-v0.1",
+    { inputs: prompt },
+    {
+        headers: { Authorization: `Bearer ${HUGGINGFACE_API_KEY}` }
+    }
+);
 
         res.json({ response: response.data });
     } catch (error) {
