@@ -7,33 +7,36 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const HUGGINGFACE_API_KEY = process.env.HUGGINGFACE_API_KEY;
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
-// Endpoint do generowania tekstów
-app.post("/generate-text", async (req, res) => {
+// Endpoint do generowania treści
+app.post("/generate", async (req, res) => {
     const { prompt } = req.body;
-
     if (!prompt) {
         return res.status(400).json({ error: "Brak promptu do wygenerowania treści" });
     }
-
     try {
         const response = await axios.post(
-    "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-v0.1",
-    { inputs: prompt },
-    {
-        headers: { Authorization: `Bearer ${HUGGINGFACE_API_KEY}` }
-    }
-);
-
-        res.json({ response: response.data });
+            "https://api.openai.com/v1/chat/completions",
+            {
+                model: "gpt-3.5-turbo",
+                messages: [{ role: "user", content: prompt }],
+                max_tokens: 500
+            },
+            {
+                headers: {
+                    "Authorization": `Bearer ${OPENAI_API_KEY}`,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+        res.json({ response: response.data.choices[0].message.content });
     } catch (error) {
-        console.error("Błąd Hugging Face:", error.response ? error.response.data : error.message);
-        res.status(500).json({ error: "Błąd generowania treści AI" });
+        console.error("Błąd OpenAI:", error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
+        res.status(500).json({ error: error.response ? error.response.data : "Błąd generowania treści AI" });
     }
 });
 
-// Start serwera
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
