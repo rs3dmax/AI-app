@@ -45,12 +45,14 @@ app.post("/generate", async (req, res) => {
     }
 });
 
-// Start serwera
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    
 // Endpoint domyślny na głównej stronie
 app.get("/", (req, res) => {
     res.send("Hello! This is the AI App backend.");
 });
+
+// Start serwera
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
