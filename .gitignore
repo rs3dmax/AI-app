@@ -1,0 +1,8 @@
+# Ignorowanie pliku .env (ważne dla bezpieczeństwa)
+.env
+
+# Ignorowanie katalogu node_modules (żeby nie zajmował miejsca w repozytorium)
+node_modules/
+
+# Ignorowanie plików logów
+*.log
