@@ -4,6 +4,9 @@ const cors = require("cors");
 const axios = require("axios");
 require("dotenv").config();
 
+// Logowanie klucza API (tylko do testów, usuń po sprawdzeniu!)
+console.log("API Key:", process.env.OPENAI_API_KEY);
+
 // Inicjalizacja aplikacji Express
 const app = express();
 app.use(express.json());
